@@ -1,0 +1,17 @@
+Alphabet:
+A-Z (upper case English alphabet)
+a-z (lower case English alphabet)
+0-9 (decimal digits)
+_ (underline)
+
+Lexic:
+operators: + - * / %  = == != < <= > >=
+separators: ()  [] {} : ; , " ' space newline
+reserved words: int char if else print read while return
+identifier = (letter|"_"){letter|digit|"_"}
+letter = "A"|"B"|..|"Z"|"a"|"b"..|"z"
+digit = "0"|"1"|..|"9"
+nzdigit = "1"|"2"|..|"9"
+int = ["-"] nzdigit {digit} | "0"
+char = letter|digit|"_"|" "
+string = '"'{char}'"'
