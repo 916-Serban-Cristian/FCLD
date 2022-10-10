@@ -1,0 +1,21 @@
+program = {statement}
+statement = (int_statement|char_statement|array_statement|assign_statement|if_statement|while_statement|return_statement|function_call_statement) ";"
+int_statement = "int" identifier_list
+char_statement = "char" identifier_list
+array_statement = type "[" positive_number "]" pure_identifier_list
+type = "int" | "char"
+positive_number = nzdigit {digit}
+noassignment_identifier_list = identifier {"," identifier}
+identifier_list = identifier ["=" expression] {"," identifier ["=" expression]}
+expression = int_expression | char_expression
+int_expression = int | identifier | int_expression ("+"|"-"|"*"|"/") int_expression | "(" int_expression ("+"|"-"|"*"|"/") int_expression ")"
+char_expression = char | identifier
+string_expression = string | identifier | string_expression + string_expression
+assign_statement = identifier "=" expression
+if_statement = "if" "(" condition ")" "{" {statement} "}" ["else" "{" {statement} "}"]
+condition = expression ("=="|"<"|"<="|">"|">=") expression
+while_statement = "while" "(" condition ")" "{" {statement} "}"
+return_statement = "return" expression
+function_call_statement = function_name "(" [expression_list] ")"
+expression_list = expression {"," expression}
+function_name = "print" | "read"
