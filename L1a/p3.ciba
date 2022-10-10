@@ -1,0 +1,11 @@
+//compute and print to standard output the sum of n numbers read from standard input
+
+int n, i = 0, s = 0;
+read(n);
+while (i < n) {
+	int a;
+	read(a);
+	s = s + a;
+	i = i + 1;
+};
+print(s);
