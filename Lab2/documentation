@@ -1,0 +1,23 @@
+1. Symbol Table:
+
+a. unique for identifiers and constants (create one instance of  ST)
+
+b. separate tables for identifiers, respectively 
+
+  Constants (create 2 instances)
+
+2. Symbol Table (you need to implement the data structure and required operations) :
+
+a. Unsorted table
+
+b. alphabetically sorted table
+
+c. alphabetically binary search tree
+
+d. hash table
+
+
+
+My symbol table is a class which implements a wrapper around the Java Hashtable class. It is parameterized only for the tokens and it uses their built-in hashCode method as keys.
+This way, in the PIF we can store pairs of the form (id, Integer), where the integer is a unique hash for the token that can be quickly retrived from the symbol table. The symbol table
+can be looked up efficiently for both positions and tokens.
