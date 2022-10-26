@@ -1,0 +1,6 @@
+https://github.com/916-Serban-Cristian/FLCD/tree/main/Lab3
+
+Implement a scanner (lexical analyzer): Implement the scanning algorithm and use ST from lab 2 for the symbol table.
+
+My scanner class uses regex to match different types of tokens. It uses my implementation of ST from the previous lab and
+also implements the pif. Details about implementation are found in javadoc.
