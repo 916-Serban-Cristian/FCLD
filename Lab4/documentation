@@ -1,0 +1,11 @@
+https://github.com/916-Serban-Cristian/FLCD/tree/main/Lab4
+
+Final lab scanner (integrate Lab 1a & 1b, Lab 2, Lab 3)
+
+The scanner receives a String (the program) and a list of Strings (the tokens from token.in).
+The method scan performs the scanning process to create the pif and st.
+At each step comments and whitespaces are skipped and then each token is matched into the right category and is added to its corresponding table in the st symbol table.
+Regex is used to match each token to a corresponding type.
+In the pif the string constants correspond to the value -2, int constants -1, tokens from token.in 0 and identifiers the position in the identifier table.
+The scanner raises a ScannerException if an error is found.
+The st is written in the file ST.out and the pif in the file PIF.out.
