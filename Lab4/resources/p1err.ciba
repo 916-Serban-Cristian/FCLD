@@ -1,0 +1,14 @@
+// compute and print to standard output the min of 3 numbers from standard input
+
+int 3a, b, c; //spelling error: identifier can't start with digit
+read(a);$ //illegal character
+read(b);
+read(c);
+int min = a;
+if (b < min) {
+	min = b;
+};
+if (c < min) {
+	min = c;
+};
+print(min);

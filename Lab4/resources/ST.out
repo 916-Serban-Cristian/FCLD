@@ -1,0 +1,11 @@
+Identifier table:
+110 -> n
+115 -> s
+105 -> i
+97 -> a
+
+Int constants table:
+48 -> 0
+49 -> 1
+
+String constants table:
