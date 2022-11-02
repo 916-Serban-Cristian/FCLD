@@ -2,7 +2,7 @@
 
 int n, i = 0, s = 0;
 read(n);
-while (i <= n) {
+while (i < n) {
 	int a;
 	read(a);
 	s = s + a;
