@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class FiniteAutomaton {
     private List<String> states;
@@ -22,10 +23,10 @@ public class FiniteAutomaton {
                     var key = matcher.group(1);
                     var value = line.substring(matcher.end()).replaceAll("[{}()]", "");
                     switch (key) {
-                        case "states" -> states = List.of(value.split(","));
-                        case "alphabet" -> alphabet = List.of(value.split(","));
+                        case "states" -> states = Stream.of(value.split(",")).map(String::strip).toList();
+                        case "alphabet" -> alphabet = Stream.of(value.split(",")).map(String::strip).toList();
                         case "in_state" -> initialState = value;
-                        case "out_states" -> outputStates = List.of(value.split(","));
+                        case "out_states" -> outputStates = Stream.of(value.split(",")).map(String::strip).toList();
                         case "transitions" -> {
                             var transitionStrings = value.split(";");
                             transitions = new ArrayList<>();
@@ -116,7 +117,7 @@ public class FiniteAutomaton {
                     break;
                 }
             }
-            if (!found) return null;
+            if (!found) break;
             nextAccepted.add(letter);
         }
         for (var outputState : outputStates) {
@@ -126,6 +127,7 @@ public class FiniteAutomaton {
     }
 
     public String getSubstringAccepted(String word) {
-        return listToString(getSubstringAccepted(stringToList(word)));
+        var substring = getSubstringAccepted(stringToList(word));
+        return substring != null ? listToString(substring) : null;
     }
 }
