@@ -71,15 +71,13 @@ public class Scanner {
         var matcher = strRegex.matcher(program.substring(index));
         if (matcher.find()) {
             var token = matcher.group(1);
-            pif.add(new AbstractMap.SimpleEntry<>("strConst", -2));
-            symbolTable.addStringConstant(token);
+            pif.add(new AbstractMap.SimpleEntry<>("strConst", symbolTable.posStringConstant(token)));
             index += matcher.end();
             return true;
         }
         strRegex = Pattern.compile("^\"");
         matcher = strRegex.matcher(program.substring(index));
-        if (matcher.find())
-            throw new ScannerException("Lexical error: String not closed on line " + currentLine);
+        if (matcher.find()) throw new ScannerException("Lexical error: String not closed on line " + currentLine);
         return false;
     }
 
@@ -89,22 +87,37 @@ public class Scanner {
      * @return true if a match was found, false otherwise.
      */
     private boolean intConstant() {
-        var intRegex = Pattern.compile("^(-?[1-9]\\d*|0)(?!\\w)");
-        var matcher = intRegex.matcher(program.substring(index));
-        if (matcher.find()) {
-            var token = matcher.group(1);
-            if (pif.size() > 0) {
-                var pif_last = pif.get(pif.size() - 1).getValue();
-                if ((token.charAt(0) == '+' || token.charAt(0) == '-') && (pif_last == -1 || pif_last == -2)) {
-                    return false;
-                }
-            }
-            pif.add(new AbstractMap.SimpleEntry<>("intConst", -1));
-            symbolTable.addIntConstant(token);
-            index += matcher.end();
-            return true;
+//        var intRegex = Pattern.compile("^(-?[1-9]\\d*|0)(?!\\w)");
+//        var matcher = intRegex.matcher(program.substring(index));
+//        if (matcher.find()) {
+//            var token = matcher.group(1);
+//            if (pif.size() > 0) {
+//                var pif_last = pif.get(pif.size() - 1).getValue();
+//                if ((token.charAt(0) == '+' || token.charAt(0) == '-') && (pif_last == -1 || pif_last == -2)) {
+//                    return false;
+//                }
+//            }
+//            pif.add(new AbstractMap.SimpleEntry<>("intConst", symbolTable.posIntConstant(token)));
+//            index += matcher.end();
+//            return true;
+//        }
+//        return false;
+        var fa = new FiniteAutomaton("resources/intConstant.in");
+        var intConstant = fa.getSubstringAccepted(program.substring(index));
+        if (intConstant == null) return false;
+        if (intConstant.equals("0")) {
+            var nextConstant = fa.getSubstringAccepted(program.substring((index + 1)));
+            if (nextConstant != null) return false;
         }
-        return false;
+        if (pif.size() > 0) {
+            var pif_last = pif.get(pif.size() - 1).getValue();
+            if ((intConstant.charAt(0) == '+' || intConstant.charAt(0) == '-') && (pif_last == -1 || pif_last == -2)) {
+                return false;
+            }
+        }
+        pif.add(new AbstractMap.SimpleEntry<>("intConst", symbolTable.posIntConstant(intConstant)));
+        index += intConstant.length();
+        return true;
     }
 
     /**
@@ -145,15 +158,21 @@ public class Scanner {
      * @return true if a match was found, false otherwise.
      */
     private boolean identifier() {
-        var idRegex = Pattern.compile("^([a-zA-Z_]+[a-zA-Z0-9_]*)");
-        var matcher = idRegex.matcher(program.substring(index));
-        if (matcher.find()) {
-            var token = matcher.group(1);
-            pif.add(new AbstractMap.SimpleEntry<>("id", symbolTable.posIdentifier(token)));
-            index += matcher.end();
-            return true;
-        }
-        return false;
+//        var idRegex = Pattern.compile("^([a-zA-Z_]+[a-zA-Z0-9_]*)");
+//        var matcher = idRegex.matcher(program.substring(index));
+//        if (matcher.find()) {
+//            var token = matcher.group(1);
+//            pif.add(new AbstractMap.SimpleEntry<>("id", symbolTable.posIdentifier(token)));
+//            index += matcher.end();
+//            return true;
+//        }
+//        return false;
+        var fa = new FiniteAutomaton("resources/identifier.in");
+        var identifier = fa.getSubstringAccepted(program.substring(index));
+        if (identifier == null) return false;
+        pif.add(new AbstractMap.SimpleEntry<>("id", symbolTable.posIdentifier(identifier)));
+        index += identifier.length();
+        return true;
     }
 
     /**
@@ -163,15 +182,13 @@ public class Scanner {
      */
     private void nextToken() throws ScannerException {
         while (true) {
-            if (!skipWhiteSpace() && !skipComment())
-                break;
+            if (!skipWhiteSpace() && !skipComment()) break;
         }
-        if (index == program.length())
-            return;
+        if (index == program.length()) return;
         if (stringConstant() || intConstant() || tokenFromList() || identifier()) {
             return;
         }
-        throw new ScannerException("Lexical error: Cannot classify token on line " + currentLine);
+        throw new ScannerException("Lexical error: Cannot classify token on line " + currentLine + ":\n" + program.substring(index, program.substring(index).indexOf('\n') + index));
     }
 
     /**
