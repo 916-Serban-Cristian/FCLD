@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -41,6 +40,16 @@ public class FiniteAutomaton {
         } catch (java.io.FileNotFoundException e) {
             System.out.println("File not found");
         }
+    }
+
+    public boolean checkDeterministic() {
+        var choices = new HashMap<String, HashMap<String, Set<String>>>();
+        states.forEach(state -> choices.put(state, new HashMap<>()));
+        alphabet.forEach(letter -> states.forEach(state -> choices.get(state).put(letter, new HashSet<>())));
+        transitions.forEach(transition -> choices.get(transition.from()).get(transition.label()).add(transition.to()));
+        return choices.entrySet().
+                stream().
+                allMatch(entry -> entry.getValue().values().stream().allMatch(entry1 -> entry1.size() <= 1));
     }
 
     private List<String> stringToList(String string) {
