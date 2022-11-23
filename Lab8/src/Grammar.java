@@ -25,9 +25,9 @@ public class Grammar {
         startingSymbol = lines.get(2).trim();
         productionSet = new ProductionSet();
         for (int i = 3; i < lines.size(); i++) {
-            String[] production = lines.get(i).trim().split("->");
-            List<String> lhs = Arrays.stream(production[0].trim().split(" ")).collect(Collectors.toList());
-            List<String> rhs = Arrays.stream(production[1].trim().split(" ")).filter(it -> !Objects.equals(it, "epsilon")).collect(Collectors.toList());
+            var production = lines.get(i).trim().split("->");
+            var lhs = Arrays.stream(production[0].trim().split(" ")).collect(Collectors.toList());
+            var rhs = Arrays.stream(production[1].trim().split(" ")).filter(it -> !Objects.equals(it, "epsilon")).collect(Collectors.toList());
             productionSet.addProduction(lhs, rhs);
         }
     }

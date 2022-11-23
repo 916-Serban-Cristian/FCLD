@@ -36,9 +36,9 @@ public class ProductionSet {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (List<String> lhs : productions.keySet()) {
-            for (List<String> rhs : productions.get(lhs)) {
+        var sb = new StringBuilder();
+        for (var lhs : productions.keySet()) {
+            for (var rhs : productions.get(lhs)) {
                 sb.append(lhs).append(" -> ").append(rhs).append("\n");
             }
         }
@@ -47,9 +47,9 @@ public class ProductionSet {
     }
 
     public List<Map.Entry<String, List<String>>> getOrderedProductions() {
-        List<Map.Entry<String, List<String>>> orderedProductions = new ArrayList<>();
-        for (List<String> lhs : productions.keySet()) {
-            for (List<String> rhs : productions.get(lhs)) {
+        var orderedProductions = new ArrayList<Map.Entry<String, List<String>>>();
+        for (var lhs : productions.keySet()) {
+            for (var rhs : productions.get(lhs)) {
                 orderedProductions.add(new AbstractMap.SimpleEntry<>(lhs.get(0), rhs));
             }
         }
