@@ -1,1 +1,24 @@
 https://github.com/916-Serban-Cristian/FLCD/tree/main/Lab11
+
+This is an implementation for a LR(0) parser outputting a parsing tree table.
+The Grammar class reads from an input file that contains a grammar structured as follows:
+non-terminals
+terminals
+starting symbol
+production rules ( nonterminal -> combination of terminals and nonterminals)
+and stores them in relevant data structures. It also provides a method to enrich the grammar for parsing.
+The ProductionSet class is one of the data structures used in the grammar and it uses a hashmap to store production rules with left-hand sides as keys and right-hand sides as values.
+The CanonicalCollection is a class that stores states and adjacency lists necessary for closures.
+The Item class provides a data class to work with the canonical collection for closures.
+The StateType is an enum with the possible types of the states in the canonical collection.
+The State class provides a data class to store multiple items and a state necessary for the parser.
+The Row class provides a data structure to store table rows for parsing, with action, goTo and reduction index.
+The Table class implements a map with integers as keys and rows as values in order to store the parsing table.
+The ParsingTreeRow class implements a data structure to store a node in the parsing tree table output.
+The LR class provides the implementation of the actual parser, putting together all the specified classes. It takes the grammar and provides the necessary parsing methods:
+closure,
+goTo,
+canonicalCollection.
+It also has helper methods, such as getDotPrecededNonTerminal and getParsingTable.
+The actual parsing happens in the parse method, which returns the parsing tree table.
+The main method loads a grammar from file, provides some operations on the table, as well as helper methods to load words from a file or the PIF and output the analysis.
