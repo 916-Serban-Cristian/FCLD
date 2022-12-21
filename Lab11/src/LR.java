@@ -136,6 +136,7 @@ public class LR {
                 }
                 case REDUCE -> {
                     var productionToReduceTo = orderedProductions.get(tableValue.reductionIndex);
+                    System.out.println(productionToReduceTo);
                     if (productionToReduceTo == null) {
                         throw new Exception("Invalid reduction index " + tableValue.reductionIndex);
                     }
@@ -153,6 +154,10 @@ public class LR {
                 }
                 case SHIFT_REDUCE_CONFLICT -> {
                     throw new Exception("Shift reduce conflict");
+                }
+
+                case REDUCE_REDUCE_CONFLICT -> {
+                    throw new Exception("Reduce reduce conflict");
                 }
             }
         }

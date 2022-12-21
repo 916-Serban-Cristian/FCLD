@@ -33,12 +33,12 @@ public class Main {
         try {
             // var parseTree = lr.parse(readFromSequence());
             var parseTree = lr.parse(readFromPif());
-            parseTree.sort(Comparator.comparingInt(a -> a.index));
-            for (var row : parseTree) {
-                System.out.println(row.index + ": " + row.info + ", " + row.parent + ", " + row.rightSibling);
-            }
+//            parseTree.sort(Comparator.comparingInt(a -> a.index));
+//            for (var row : parseTree) {
+//                System.out.println(row.index + ": " + row.info + ", " + row.parent + ", " + row.rightSibling);
+//            }
         } catch (Exception e) {
-            System.out.println(e.getMessage() + "\nNot accepted");
+            System.out.println("Not accepted\n" + e.getMessage());
         }
 
     }

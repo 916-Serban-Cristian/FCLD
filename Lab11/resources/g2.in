@@ -1,148 +1,28 @@
-array_statement assign_statement beginning_of_identifier condition digit expression expression_list function_call_statement function_name identifier identifier_list if_statement int_constant int_expression letter math_operator maybe_equal_expression maybe_sign nzdigit positive_number program pure_identifier_list relational_operator rest_of_identifier return_statement statement string_constant string_expression interior_of_string_constant rest_of_int_constant int_statement char_statement type while_statement
-" ( ) * + , - / 0 1 2 3 4 5 6 7 8 9 ; < <= = == > >= A B C D E F G H I J K L M N O P Q R S T U V W X Y Z _ a b c char d digit e else epsilon f g h i int if j k l m n o p print q r read return s t u v w while x y z { }
+array_statement assign_statement condition expression expression_list function_call_statement function_name identifier_list if_statement int_expression math_operator maybe_equal_expression positive_number program pure_identifier_list relational_operator return_statement statement string_expression int_statement char_statement type while_statement
+" ( ) * + , - / ; < <= = == > >= char digit else epsilon int if print read return while { } identifier int_constant string_constant
 program
-program -> statement ; program
-program -> epsilon
+program -> statement ; statement ; statement ; statement ; statement ; statement ; statement ; statement ;
 statement -> int_statement
-statement -> char_statement
-statement -> array_statement
 statement -> assign_statement
-statement -> if_statement
 statement -> while_statement
-statement -> return_statement
 statement -> function_call_statement
-int_statement -> int identifier_list
-char_statement -> char identifier_list
-identifier_list -> identifier maybe_equal_expression
-identifier_list -> identifier maybe_equal_expression , identifier_list
-maybe_equal_expression -> = expression
-maybe_equal_expression -> epsilon
-expression -> int_expression
-expression -> char_expression
-expression -> string_expression
+int_statement -> int identifier
+expression -> identifier math_operator int_constant
+expression -> identifier math_operator identifier
+assign_statement -> identifier = expression
+assign_statement -> identifier = int_constant
+condition -> identifier relational_operator identifier
+while_statement -> while ( condition ) { statement ; statement ; statement ; statement ; }
+function_call_statement -> function_name ( identifier )
+function_call_statement -> function_name ( )
+function_name -> print
+function_name -> read
 math_operator -> +
 math_operator -> -
 math_operator -> *
 math_operator -> /
-int_expression -> int_constant
-int_expression -> identifier
-int_expression -> int_expression math_operator int_expression
-int_expression -> ( int_expression math_operator int_expression )
-char_expression -> char_constant
-char_expression -> identifier
-char_expression -> char_expression math_operator char_expression
-char_expression -> ( char_expression math_operator char_expression )
-string_expression -> string_constant
-string_expression -> identifier
-expression_list -> expression
-expression_list -> expression , expression_list
-type -> int
-type -> char
-array_statement -> type [ positive_number ] pure_identifier_list
-pure_identifier_list -> identifier
-pure_identifier_list -> identifier , pure_identifier_list
-assign_statement -> identifier = expression
-if_statement -> if ( condition ) { program }
-if_statement -> if ( condition ) { program } else { program }
 relational_operator -> ==
 relational_operator -> <
 relational_operator -> <=
 relational_operator -> >
 relational_operator -> >=
-condition -> expression relational_operator expression
-while_statement -> while ( condition ) { program }
-return_statement -> return expression
-function_call_statement -> function_name ( expression_list )
-function_call_statement -> function_name ( )
-function_name -> print
-function_name -> read
-letter -> A
-letter -> B
-letter -> C
-letter -> D
-letter -> E
-letter -> F
-letter -> G
-letter -> H
-letter -> I
-letter -> J
-letter -> K
-letter -> L
-letter -> M
-letter -> N
-letter -> O
-letter -> P
-letter -> Q
-letter -> R
-letter -> S
-letter -> T
-letter -> U
-letter -> V
-letter -> W
-letter -> X
-letter -> Y
-letter -> Z
-letter -> a
-letter -> b
-letter -> c
-letter -> d
-letter -> e
-letter -> f
-letter -> g
-letter -> h
-letter -> i
-letter -> j
-letter -> k
-letter -> l
-letter -> m
-letter -> n
-letter -> o
-letter -> p
-letter -> q
-letter -> r
-letter -> s
-letter -> t
-letter -> u
-letter -> v
-letter -> w
-letter -> x
-letter -> y
-letter -> z
-digit -> 0
-digit -> 1
-digit -> 2
-digit -> 3
-digit -> 4
-digit -> 5
-digit -> 6
-digit -> 7
-digit -> 8
-digit -> 9
-nzdigit -> 1
-nzdigit -> 2
-nzdigit -> 3
-nzdigit -> 4
-nzdigit -> 5
-nzdigit -> 6
-nzdigit -> 7
-nzdigit -> 8
-nzdigit -> 9
-beginning_of_identifier -> letter
-beginning_of_identifier -> _
-identifier -> beginning_of_identifier rest_of_identifier
-rest_of_identifier -> epsilon
-rest_of_identifier -> letter rest_of_identifier
-rest_of_identifier -> digit rest_of_identifier
-rest_of_identifier -> _ rest_of_identifier
-maybe_sign -> -
-maybe_sign -> epsilon
-int_constant -> maybe_sign positive_number
-int_constant -> 0
-positive_number -> nzdigit rest_of_int_constant
-rest_of_int_constant -> epsilon
-rest_of_int_constant -> digit rest_of_int_constant
-string_constant -> " interior_of_string_constant "
-interior_of_string_constant -> epsilon
-interior_of_string_constant -> letter interior_of_string_constant
-interior_of_string_constant -> digit interior_of_string_constant
-interior_of_string_constant -> _ interior_of_string_constant
