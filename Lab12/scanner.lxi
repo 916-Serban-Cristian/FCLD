@@ -133,11 +133,12 @@ char* string_copy(char *string) {
 
 DIGIT [0-9]
 NON_ZERO_DIGIT [1-9]
-INT_CONSTANT [-]?{NON_ZERO_DIGIT}{DIGIT}*|0
+INT_CONSTANT (-|0|{NON_ZERO_DIGIT}{DIGIT}*)
 LETTER [a-zA-Z_]
 STRING_CONSTANT \"({LETTER}|{DIGIT})*\"
 IDENTIFIER {LETTER}({LETTER}|{DIGIT})*
-BAD_IDENTIFIER ({DIGIT})+({LETTER})+({LETTER}|{DIGIT})*
+BAD_INT_CONSTANT (0|[+])?{DIGIT}+
+BAD_IDENTIFIER {DIGIT}+{LETTER}+({LETTER}|{DIGIT})*
 
 %%
 
@@ -148,6 +149,8 @@ BAD_IDENTIFIER ({DIGIT})+({LETTER})+({LETTER}|{DIGIT})*
 {BAD_IDENTIFIER} {printf("Error at token %s at line %d\n", yytext, lines); exit(1);}
 
 {INT_CONSTANT} {char *int_const = string_copy(yytext); add_to_pif(get_entry(2, NULL, get_int_index(int_const))); printf("%s - int constant\n", yytext);}
+
+{BAD_INT_CONSTANT} {printf("Error at token %s at line %d\n", yytext, lines); exit(1);}
 
 {STRING_CONSTANT} {char *str_const = string_copy(yytext); add_to_pif(get_entry(3, NULL, get_string_index(str_const))); printf("%s - str constant\n", yytext);}
 
