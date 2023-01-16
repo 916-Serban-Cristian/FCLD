@@ -40,30 +40,55 @@
 %token BRACKETCLOSE;
 %token COMMA;
 
-%start Program 
+%start program 
 
 %%
-Program : Statement SEMICOLON Program {printf("Program -> Statement ; Program\n");} | Statement SEMICOLON {printf("Program -> Statement ;\n");} ;
-Statement : IntStatement {printf("Statement -> IntStatement\n");} | CharStatement {printf("Statement -> ArrStatement\n");} | AssignStatement {printf("Statement -> AssignStatement\n");} | IfStatement {printf("Statement -> IfStatement\n");} | WhileStatement {printf("Statement -> WhileStatement\n");} | ReturnStatement {printf("Statement -> ReturnStatement\n");} | FunctionCallStatement {printf("Statement -> FunctionCallStatement\n");} ;
-IntStatement : INT IdentifierList {printf("IntStatement -> int IdentifierList\n");} ;
-CharStatement : CHAR IdentifierList {printf("CharStatement -> char IdentifierList\n");} ;
-IdentifierList : MaybeEqualExpression {printf("IdentifierList -> MaybeEqualExpression \n");} | MaybeEqualExpression COMMA IdentifierList {printf("IdentifierList -> MaybeEqualExpression , IdentifierList\n");} ;
-MaybeEqualExpression : IDENTIFIER {printf("MaybeEqualExpression -> IDENTIFIER \n");} | IDENTIFIER EQ Expression {printf("MaybeEqualExpression -> IDENTIFIER = Expression \n");} ;
-Expression : IntExpression {printf("Expression -> IntExpression \n");} | StringExpression {printf("Expression -> StringExpression \n");} ;
-MathematicalOperator : PLUS {printf("MathematicalOperator -> + \n");} | MINUS {printf("MathematicalOperator -> - \n");} | TIMES {printf("MathematicalOperator -> * \n");} | DIV {printf("MathematicalOperator -> / \n");} | MOD {printf("MathematicalOperator -> % \n");} ;
-IntExpression : INTCONSTANT {printf("IntExpression -> INTCONSTANT \n");} | IDENTIFIER {printf("IntExpression -> IDENTIFIER \n");} | FunctionCallStatement {printf("IntExpression -> FunctionCallStatement \n");} | IntExpression MathematicalOperator IntExpression {printf("IntExpression -> IntExpression MathematicalOperator IntExpression \n");} | OPEN IntExpression MathematicalOperator IntExpression CLOSE {printf("IntExpression -> ( IntExpression MathematicalOperator IntExpression ) \n");} ;
-StringExpression : STRINGCONSTANT {printf("StringExpression -> STRINGCONSTANT \n");} ;
-ExpressionList : Expression {printf("ExpressionList -> Expression \n");} | Expression COMMA ExpressionList {printf("ExpressionList -> Expression , ExpressionList \n");} ;
-AssignStatement : IDENTIFIER EQ Expression {printf("AssignStatement -> IDENTIFIER = Expression \n");} ;
-IfStatement : IF OPEN Condition CLOSE BRACKETOPEN Program BRACKETCLOSE {printf("IfStatement -> if ( Condition ) { Program } \n");} | IF OPEN Condition CLOSE BRACKETOPEN Program BRACKETCLOSE ELSE BRACKETOPEN Program BRACKETCLOSE {printf("IfStatement -> if ( Condition ) { Program } else { Program } \n");} ;
-RelationalOperator : EQQ {printf("RelationalOperator -> ==\n");} | LESS {printf("RelationalOperator -> <\n");} | LESSEQ {printf("RelationalOperator -> <=\n");} | BIGGER {printf("RelationalOperator -> >\n");} | BIGGEREQ {printf("RelationalOperator -> >=\n");} ;
-Condition : Expression RelationalOperator Expression {printf("Condition -> Expression RelationalOperator Expression\n");}
-			| Expression RelationalOperator Expression AND Expression RelationalOperator Expression {printf("Condition -> Expression RelationalOperator Expression && Expression RelationalOperator Expression\n");}
-			| Expression RelationalOperator Expression OR Expression RelationalOperator Expression {printf("Condition -> Expression RelationalOperator Expression || Expression RelationalOperator Expression\n");} ;
-WhileStatement : WHILE OPEN Condition CLOSE BRACKETOPEN Program BRACKETCLOSE {printf("WhileStatement -> while ( Condition ) { Program }\n");} ;
-ReturnStatement : RETURN Expression {printf("ReturnStatement -> return Expression\n");} ;
-FunctionCallStatement : FunctionName OPEN ExpressionList CLOSE {printf("FunctionCallStatement -> FunctionName ( ExpressionList )\n");} | FunctionName OPEN CLOSE {printf("FunctionCallStatement -> FunctionName ( )\n");} ;
-FunctionName : PRINT {printf("FunctionName -> print\n");} | READ {printf("FunctionName -> read\n");} ;
+program: statement SEMICOLON program { printf("program -> statement ; program\n"); } | statement SEMICOLON {printf("program -> statement ;\n"); } ;
+
+statement: int_statement { printf("statement -> int_statement\n"); }
+        | assign_statement { printf("statement -> assign_statement\n"); }
+        | while_statement { printf("statement -> while_statement\n"); }
+        | function_call_statement { printf("statement -> function_call_statement\n"); }
+        ;
+
+int_statement: INT IDENTIFIER { printf("int_statement -> int IDENTIFIER\n"); }
+             ;
+
+expression: IDENTIFIER math_operator INTCONSTANT { printf("expression -> IDENTIFIER math_operator INTCONSTANT\n"); }
+        | IDENTIFIER math_operator IDENTIFIER { printf("expression -> IDENTIFIER math_operator IDENTIFIER\n"); }
+        ;
+
+assign_statement: IDENTIFIER EQ expression { printf("assign_statement -> IDENTIFIER = expression\n"); }
+               | IDENTIFIER EQ INTCONSTANT { printf("assign_statement -> IDENTIFIER = INTCONSTANT\n"); }
+               ;
+
+condition: IDENTIFIER relational_operator IDENTIFIER { printf("condition -> IDENTIFIER relational_operator IDENTIFIER\n"); }
+        ;
+
+while_statement: WHILE OPEN condition CLOSE BRACKETOPEN program BRACKETCLOSE { printf("while_statement -> while ( condition ) { program }\n"); }
+              ;
+
+function_call_statement: function_name OPEN IDENTIFIER CLOSE { printf("function_call_statement -> function_name ( IDENTIFIER )\n"); }
+                    | function_name OPEN CLOSE { printf("function_call_statement -> function_name ( )\n"); }
+                    ;
+
+function_name: PRINT { printf("function_name -> print\n"); }
+            | READ { printf("function_name -> read\n"); }
+            ;
+
+math_operator: PLUS { printf("math_operator -> +\n"); }
+            | MINUS { printf("math_operator -> -\n"); }
+            | TIMES { printf("math_operator -> *\n"); }
+            | DIV { printf("math_operator -> /\n"); }
+            ;
+
+relational_operator: EQQ { printf("relational_operator -> ==\n"); }
+                | LESS { printf("relational_operator -> <\n"); }
+                | LESSEQ { printf("relational_operator -> <=\n"); }
+                | BIGGER { printf("relational_operator -> >\n"); }
+				| BIGGEREQ { printf("relational_operator -> >=\n"); }
+				;
+
 %%
 yyerror(char *s)
 {	

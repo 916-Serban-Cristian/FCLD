@@ -1,0 +1,71 @@
+%{
+#include <stdio.h>
+#include <string.h>
+#include "y.tab.h"
+int lines = 0;
+%}
+
+%option noyywrap
+%option caseless
+
+DIGIT [0-9]
+NON_ZERO_DIGIT [1-9]
+INT_CONSTANT -?(0|{NON_ZERO_DIGIT}{DIGIT}*)
+LETTER [a-zA-Z_]
+STRING_CONSTANT \"({LETTER}|{DIGIT})*\"
+IDENTIFIER {LETTER}({LETTER}|{DIGIT})*
+BAD_INT_CONSTANT (0|[+])?{DIGIT}+
+BAD_IDENTIFIER ({DIGIT})+({LETTER})+({LETTER}|{DIGIT})*
+
+%%
+
+"int" { printf("%s - reserved word\n", yytext); return INT; }
+"char" { printf("%s - reserved word\n", yytext); return CHAR; }
+"if" { printf("%s - reserved word\n", yytext); return IF; }
+"print" { printf("%s - reserved word\n", yytext); return PRINT; }
+"read" { printf("%s - reserved word\n", yytext); return READ; }
+"else" { printf("%s - reserved word\n", yytext); return ELSE; }
+"while" { printf("%s - reserved word\n", yytext); return WHILE; }
+"return" { printf("%s - reserved word\n", yytext); return RETURN; }
+
+{IDENTIFIER} {printf("%s - identifier\n", yytext); return IDENTIFIER; }
+
+{BAD_IDENTIFIER} {printf("Error at token %s at line %d\n", yytext, lines); return -1;}
+
+{INT_CONSTANT} {printf("%s - int constant\n", yytext); return INTCONSTANT; }
+
+{BAD_INT_CONSTANT} {printf("Error at token %s at line %d\n", yytext, lines); return -1;}
+
+{STRING_CONSTANT} {printf("%s - str constant\n", yytext); return STRINGCONSTANT; }
+
+"+" { printf("%s - operator\n", yytext); return PLUS; }
+"-" { printf("%s - operator\n", yytext); return MINUS; }
+"*" { printf("%s - operator\n", yytext); return TIMES; }
+"/" { printf("%s - operator\n", yytext); return DIV; }
+"%" { printf("%s - operator\n", yytext); return MOD; }
+"=" { printf("%s - operator\n", yytext); return EQ; }
+">" { printf("%s - operator\n", yytext); return BIGGER; }
+">=" { printf("%s - operator\n", yytext); return BIGGEREQ; }
+"<" { printf("%s - operator\n", yytext); return LESS; }
+"<=" { printf("%s - operator\n", yytext); return LESSEQ; }
+"==" { printf("%s - operator\n", yytext); return EQQ; }
+"!=" { printf("%s - operator\n", yytext); return NEQ; }
+"&&" { printf("%s - operator\n", yytext); return AND; }
+"||" { printf("%s - operator\n", yytext); return OR; }
+
+";" { printf("%s - separator\n", yytext); return SEMICOLON; }
+"(" { printf("%s - separator\n", yytext); return OPEN; }
+")" { printf("%s - separator\n", yytext); return CLOSE; }
+"{" { printf("%s - separator\n", yytext); return BRACKETOPEN; }
+"}" { printf("%s - separator\n", yytext); return BRACKETCLOSE; }
+"," { printf("%s - separator\n", yytext); return COMMA; }
+
+[ \t]+ {}
+
+[\n]+ {++lines;}
+
+"//".*
+
+. {printf("Error at token %s at line %d\n", yytext, lines); return -1;}
+
+%%
